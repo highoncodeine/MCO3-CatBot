@@ -46,10 +46,10 @@ def compute_reward(state: int, next_state: int, done: bool) -> float:
     if next_dist_to_cat < dist_to_cat:
         reward += 1.0 # Closer
     elif next_dist_to_cat > dist_to_cat:
-        reward -= 0.5 # Farther
+        reward -= 1.0 # Farther
 
     # Small penalty for every step taken (to encourage catching the cat quickly)
-    reward -= 0.1
+    reward -= 0.2
     
     return reward
 
