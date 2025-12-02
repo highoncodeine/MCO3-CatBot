@@ -10,7 +10,6 @@ from cat_env import make_env
 # TODO: YOU MAY ADD ADDITIONAL IMPORTS OR FUNCTIONS HERE.                   #
 #############################################################################
 
-# Helper function for reward computation
 def compute_reward(state: int, next_state: int, done: bool) -> float:
     
     # Check if CatBot caught the cat
@@ -19,33 +18,31 @@ def compute_reward(state: int, next_state: int, done: bool) -> float:
         return 100.0
     
     # Decode positions
-    # Getting CatBot's position (r_b, c_b)
-    r_b = state // 1000
-    c_b = (state % 1000) // 100
-    # Getting the Cat's position (r_c, c_c)
-    r_c = (state % 100) // 10
-    c_c = state % 10
+    # Getting CatBot's position (row_bot, column_bot)
+    row_bot = state // 1000
+    column_bot = (state % 1000) // 100
+    # Getting the Cat's position (row_cat, column_cat)
+    row_cat = (state % 100) // 10
+    column_cat = state % 10
     
     # Get CatBot's next position
-    r_nb = next_state // 1000
-    c_nb = (next_state % 1000) // 100
+    next_row_bot = next_state // 1000
+    next_column_bot = (next_state % 1000) // 100
     # Get Cat's next position
-    r_nc = (next_state % 100) // 10
-    c_nc = next_state % 10
+    next_row_cat = (next_state % 100) // 10
+    next_column_cat = next_state % 10
 
     # Use Manhattan distance to get distance to cat
-    dist_to_cat = abs(r_c - r_b) + abs(c_c - c_b)
-    next_dist_to_cat = abs(r_nc - r_nb) + abs(c_nc - c_nb)
+    dist_to_cat = abs(row_cat - row_bot) + abs(column_cat - column_bot)
+    next_dist_to_cat = abs(next_row_cat - next_row_bot) + abs(next_column_cat - next_column_bot)
     
-    # Reward for getting closer to the cat (Proximity Reward)
-    # Give a small reward for decreasing the distance, and a small
-    # penalty for increasing it.
-    
+    # Give a small reward for decreasing the distance, else,
+    # give a small penalty for increasing it.
     reward = 0.0
     if next_dist_to_cat < dist_to_cat:
-        reward += 1.0 # Closer
+        reward += 1.0
     elif next_dist_to_cat > dist_to_cat:
-        reward -= 1.0 # Farther
+        reward -= 1.0
 
     # Penalty for every step taken
     reward -= 0.2
@@ -83,7 +80,7 @@ def train_bot(cat_name, render: int = -1):
     # Exploration Strategy (Epsilon-Greedy)
     epsilon = 1.0            # Initial exploration rate
     max_epsilon = 1.0        # Max exploration rate
-    max_epsilon = 0.01       # Minimum exploration rate
+    min_epsilon = 0.01       # Minimum exploration rate
     # Decay rate
     decay_rate = 0.0001
     
@@ -118,7 +115,7 @@ def train_bot(cat_name, render: int = -1):
         step = 0
         
         while not done and step < max_steps:
-            # Explore or exploit (Epsilon-Greedy Strategy)
+            # Explore or exploit
             if random.uniform(0, 1) < epsilon:
                 # Explore: choose a random action
                 action = env.action_space.sample()
@@ -155,7 +152,7 @@ def train_bot(cat_name, render: int = -1):
             step += 1
             
         # Update Epsilon after the episode ends
-        epsilon = max_epsilon + (max_epsilon - max_epsilon) * np.exp(-decay_rate * ep)
+        epsilon = min_epsilon + (max_epsilon - min_epsilon) * np.exp(-decay_rate * ep)
         
         
         #############################################################################
