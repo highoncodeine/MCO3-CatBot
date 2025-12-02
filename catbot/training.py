@@ -82,7 +82,7 @@ def train_bot(cat_name, render: int = -1):
     max_epsilon = 1.0   # Max exploration rate
     min_epsilon = 0.01  # Minimum exploration rate
     # Decay rate
-    decay_rate = 0.0001
+    decay_rate = 0.001
     
     # Step counter limit in case of loop
     max_steps = 100 # Slightly higher than evaluation limit for training
