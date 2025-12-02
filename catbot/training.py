@@ -42,7 +42,7 @@ def compute_reward(state: int, next_state: int, done: bool) -> float:
     if next_dist_to_cat < dist_to_cat:
         reward += 1.0
     elif next_dist_to_cat > dist_to_cat:
-        reward -= 1.0
+        reward -= 0.5
 
     # Penalty for every step taken
     reward -= 0.2
@@ -75,12 +75,12 @@ def train_bot(cat_name, render: int = -1):
     
     # Hyperparameters
     learning_rate = 0.1
-    discount_factor = 0.9
+    discount_factor = 0.95
     
     # Exploration Strategy (Epsilon-Greedy)
-    epsilon = 1.0            # Initial exploration rate
-    max_epsilon = 1.0        # Max exploration rate
-    min_epsilon = 0.01       # Minimum exploration rate
+    epsilon = 1.0       # Initial exploration rate
+    max_epsilon = 1.0   # Max exploration rate
+    min_epsilon = 0.01  # Minimum exploration rate
     # Decay rate
     decay_rate = 0.0001
     
