@@ -45,7 +45,7 @@ def compute_reward(state: int, next_state: int, done: bool) -> float:
         reward -= 0.5
 
     # Penalty for every step taken
-    reward -= 0.2
+    reward -= 0.1
     
     return reward
 
