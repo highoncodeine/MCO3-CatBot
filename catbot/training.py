@@ -104,9 +104,8 @@ def train_bot(cat_name, render: int = -1):
         # 5. Update the Q-table accordingly based on agent's rewards.                #
         ############################################################################## 
                
-        # 1. Reset the environment and get the initial state
+        # Reset the environment and get the initial state
         # The environment returns observation, info
-        # The observation is the state represented as an integer
         observation, info = env.reset()
         current_state = observation
         
